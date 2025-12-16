@@ -1,7 +1,10 @@
 package br.com.campaner.student.system.controllers;
 
+import br.com.campaner.student.system.dto.CourseStudentDTO;
 import br.com.campaner.student.system.dto.StudentDTO;
+import br.com.campaner.student.system.models.CourseStudent;
 import br.com.campaner.student.system.models.Student;
+import br.com.campaner.student.system.services.CourseStudentService;
 import br.com.campaner.student.system.services.StudentService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,9 @@ public class StudentController {
 
     @Autowired
     StudentService studentService;
+
+    @Autowired
+    CourseStudentService courseStudentService;
 
     @GetMapping(
         produces = MediaType.APPLICATION_JSON_VALUE
@@ -67,6 +73,30 @@ public class StudentController {
         studentService.delete(id);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping(
+        value = "/get_courses/{student_id}",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<?> getHisCourses(@PathVariable(name = "student_id") Long id) {
+        List<CourseStudent> courseStudents = courseStudentService.getAllCoursesStudentByStudentId(id);
+
+        return ResponseEntity.ok(courseStudents);
+    }
+
+    @PostMapping(
+        value = "/insert_courses",
+        consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<?> postHisCourses(@RequestBody List<CourseStudentDTO> body) {
+
+        for (CourseStudentDTO dto : body) {
+            courseStudentService.create(dto);
+        }
+
+        return ResponseEntity.status(201).build();
     }
 
 }

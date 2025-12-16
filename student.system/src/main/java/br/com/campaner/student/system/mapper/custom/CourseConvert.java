@@ -1,12 +1,9 @@
 package br.com.campaner.student.system.mapper.custom;
 
 import br.com.campaner.student.system.dto.CourseDTO;
-import br.com.campaner.student.system.dto.StudentDTO;
 import br.com.campaner.student.system.models.Course;
-import br.com.campaner.student.system.models.Student;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 
 @Service
 public class CourseConvert {
